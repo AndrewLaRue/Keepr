@@ -40,6 +40,7 @@ namespace Keepr.Controllers
       try
       {
         List<Keep> keeps = _profilesService.GetAllKeeps(id);
+
         return Ok(keeps);
       }
       catch (Exception e)
@@ -57,6 +58,7 @@ namespace Keepr.Controllers
       try
       {
         List<Vault> vaults = _profilesService.GetAllVaults(id);
+
         return Ok(vaults);
       }
       catch (Exception e)

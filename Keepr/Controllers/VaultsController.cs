@@ -47,12 +47,17 @@ namespace Keepr.Controllers
 
     // SECTION Get Vault by id
     [HttpGet("{id}")]
-    public ActionResult<Vault> GetOne(int id)
+    public async Task<ActionResult<Vault>> GetOne(int id)
     {
       try
       {
+        Profile user = await HttpContext.GetUserInfoAsync<Profile>();
         Vault vault = _vaultsService.GetOne(id);
-        return Ok(vault);
+        if (vault.isPrivate == false || vault.CreatorId != user.Id)
+        {
+          return Ok(vault);
+        }
+        return Ok();
       }
       catch (Exception e)
       {
