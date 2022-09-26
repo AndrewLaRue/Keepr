@@ -1,0 +1,67 @@
+@import "./_variables.scss";
+@import "bootstrap";
+@import "./_overrides.scss";
+@import "./utilities.scss";
+@import "./loaders.scss";
+
+body {
+  overscroll-behavior: none;
+}
+
+.img-text {
+  color: rgb(219, 219, 219);
+  text-shadow: 1px 1px 3px rgb(32, 30, 30);
+}
+
+.glass-card {
+  background: rgba(0, 0, 0, 0.50);
+  backdrop-filter: blur(4px);
+  border: solid #8d8b8b1f;
+  border-radius: 8px;
+  // padding: 0;
+}
+
+.bg-stone {
+  background-image: url(https://wallpaperaccess.com/full/7885018.jpg);
+  background-position: center;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.bg-clear {
+  background-color: transparent;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: $body-bg;
+}
+
+main {
+  flex-grow: 1;
+}
+
+a {
+  text-decoration: none;
+}
+
+input,
+textarea,
+select {
+  &:not(:placeholder-shown) {
+    &:valid {
+      border: 1px solid $success;
+    }
+
+    &:invalid {
+      border: 1px solid $danger;
+    }
+  }
+}
+
+form:invalid button[type="submit"] {
+  filter: grayscale(1);
+  pointer-events: none;
+}
