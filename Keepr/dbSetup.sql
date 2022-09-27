@@ -93,4 +93,36 @@ VALUES
               SELECT 
         v.*
         FROM vaults v
-        WHERE v.creatorId = '630848238b092f13fbc505c6'
+        WHERE v.creatorId = '630848238b092f13fbc505c6';
+
+
+
+
+
+
+
+-- Vaultkeep  stuff
+              SELECT 
+        vk.*,
+        k.*
+        FROM vaultKeeps vk
+        JOIN keeps k ON k.id = vk.keepId;
+
+
+
+              SELECT 
+        vk.*,
+        k.*,
+        a.*
+        FROM vaultKeeps vk
+        JOIN keeps k ON k.id = vk.keepId
+        JOIN accounts a ON a.id = vk.creatorId;
+
+
+              SELECT 
+        vk.*,
+        ck.*,
+        a.*
+        FROM vaultKeeps vk
+        JOIN collectedKeepVM ck ON ck.id = vk.keepId
+        JOIN accounts a ON a.id = vk.creatorId

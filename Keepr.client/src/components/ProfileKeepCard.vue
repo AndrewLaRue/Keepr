@@ -14,6 +14,8 @@
 
 
 <script>
+import { computed } from '@vue/reactivity'
+import { AppState } from '../AppState.js'
 import { accountService } from '../services/AccountService.js'
 import { keepsService } from '../services/KeepsService.js'
 import { logger } from '../utils/Logger.js'
@@ -28,6 +30,7 @@ export default {
   },
   setup() {
     return {
+      account: computed(() => AppState?.account),
 
       async getMyVaults() {
         try {
@@ -41,7 +44,9 @@ export default {
       async setActiveKeep(id) {
         try {
           await keepsService.setActiveKeep(id)
-          this.getMyVaults()
+          if (this.account.id != null) {
+            this.getMyVaults()
+          }
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')

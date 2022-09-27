@@ -9,8 +9,8 @@
         <div class="modal-body">
           <form class="account-form" @submit.prevent="createKeep">
             <div class="col-md-12">
-              <label for="title">Title:</label>
-              <input type="text" class="form-control" v-model="editable.title" required name="title">
+              <label for="name">Name:</label>
+              <input type="text" class="form-control" v-model="editable.name" required name="name">
             </div>
             <div class="col-md-12">
               <label for="img">Image:</label>
@@ -23,7 +23,7 @@
             </div>
 
             <div class="text-center">
-              <button type="submit" class="btn btn-primary mt-2 selectable">Save</button>
+              <button type="submit" data-bs-dismiss="modal" class="btn btn-primary mt-2 selectable">Save</button>
             </div>
           </form>
         </div>
@@ -38,15 +38,20 @@ import { ref } from 'vue';
 import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
 import { keepsService } from '../services/KeepsService.js';
+import { useRoute } from 'vue-router';
 
 export default {
   setup() {
+    const route = useRoute();
     const editable = ref({})
     return {
       editable,
       async createKeep() {
         try {
           await keepsService.createKeep(editable.value)
+          Pop.success('You created a Keep.')
+          editable.value = {}
+          await keepsService.getKeepsByProfileId(route.params.profileId)
         } catch (error) {
           logger.error('[Creating a Keep]', error)
           Pop.error(error)

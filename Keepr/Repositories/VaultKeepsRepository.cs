@@ -30,16 +30,19 @@ namespace Keepr.Repositories
       return newVaultKeep;
     }
 
-    internal List<VaultKeep> GetVaultKeeps(int vaultId)
+    internal List<CollectedKeepVM> GetVaultKeeps(int vaultId)
     {
       string sql = @"
       SELECT 
         vk.*,
-        v.*
+        k.*,
+        a.*
         FROM vaultKeeps vk
-        JOIN vaults v ON v.id = vk.vaultId
+        JOIN keeps k ON k.id = vk.keepId
+        JOIN accounts a ON a.id = vk.creatorId
+        WHERE vk.vaultId = @vaultId
       ";
-      List<VaultKeep> vaultKeeps = _db.Query<VaultKeep, Profile, VaultKeep>(sql, (vaultKeep, account) =>
+      List<CollectedKeepVM> vaultKeeps = _db.Query<CollectedKeepVM, Keep, Account, CollectedKeepVM>(sql, (vaultKeep, keep, account) =>
       {
         vaultKeep.Creator = account;
         return vaultKeep;

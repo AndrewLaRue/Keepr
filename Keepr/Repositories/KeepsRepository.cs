@@ -57,7 +57,7 @@ namespace Keepr.Repositories
         k.*,
         a.*
         FROM keeps k
-        JOIN accounts a ON a.id = k.creatorId
+        LEFT JOIN accounts a ON a.id = k.creatorId
         WHERE k.id = @id
       ";
       return _db.Query<Keep, Profile, Keep>(sql, (keep, account) =>
@@ -74,7 +74,9 @@ namespace Keepr.Repositories
       UPDATE keeps SET
       name = @name,
       img = @img,
-      description = @description
+      description = @description,
+      views = @views,
+      kept = @kept
       WHERE id = @id
       ";
       _db.Execute(sql, original);

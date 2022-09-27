@@ -15,7 +15,7 @@
               </span>
               <span class="mx-3" title="Vaults it in">
                 <i class="mdi mdi-ethernet mdi-flip-v text-primary"></i>
-                9
+                <span>{{keep.kept}}</span>
               </span>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

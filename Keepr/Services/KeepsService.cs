@@ -35,6 +35,8 @@ namespace Keepr.Services
       {
         throw new Exception("No keep found with that id.");
       }
+      keep.Views++;
+      _keepsRepo.Update(keep);
       return keep;
     }
 

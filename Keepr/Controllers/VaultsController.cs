@@ -45,27 +45,6 @@ namespace Keepr.Controllers
 
 
 
-    // SECTION Get Vault by id
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Vault>> GetOne(int id)
-    {
-      try
-      {
-        Profile user = await HttpContext.GetUserInfoAsync<Profile>();
-        Vault vault = _vaultsService.GetOne(id);
-        if (vault.isPrivate == false || vault.CreatorId != user.Id)
-        {
-          return Ok(vault);
-        }
-        return Ok();
-      }
-      catch (Exception e)
-      {
-        return BadRequest(e.Message);
-      }
-    }
-
-
 
     // SECTION Update(edit) Vault
     [HttpPut("{id}")]
@@ -106,11 +85,17 @@ namespace Keepr.Controllers
 
     // SECTION Get VaultKeeps
     [HttpGet("{id}/keeps")]
-    public ActionResult<List<VaultKeep>> GetVaultKeeps(int id)
+    public async Task<ActionResult<List<CollectedKeepVM>>> GetVaultKeeps(int id)
     {
       try
       {
-        List<VaultKeep> vaultKeep = _vaultKeepsService.GetVaultKeeps(id);
+        Profile user = await HttpContext.GetUserInfoAsync<Profile>();
+        Vault vault = _vaultsService.GetOne(id);
+        List<CollectedKeepVM> vaultKeep = _vaultKeepsService.GetVaultKeeps(id);
+        if (vault.isPrivate == true && vault.CreatorId != user.Id)
+        {
+          return BadRequest();
+        }
         return Ok(vaultKeep);
       }
       catch (Exception e)
@@ -119,6 +104,28 @@ namespace Keepr.Controllers
       }
     }
 
+
+
+    // SECTION Get Vault by id
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Vault>> GetOne(int id)
+    {
+      try
+      {
+        Profile user = await HttpContext.GetUserInfoAsync<Profile>();
+        Vault vault = _vaultsService.GetOne(id);
+        if (vault.isPrivate == true && vault.CreatorId != user.Id)
+        {
+          return BadRequest();
+        }
+        return Ok(vault);
+
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
 
 
   }

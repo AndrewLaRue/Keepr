@@ -1,17 +1,16 @@
 <template>
-  <div @click="goToVault" class="col-3">
 
-    <div class="card selectable">
-      <img :src="vault.img" class="card-img" alt="...">
-      <div class="card-img-overlay d-flex justify-content-end align-items-between flex-column">
-        <span class="d-flex justify-content-between">
-          <span class="glass-card img-text pt-1 px-1">
-            {{vault.name}}
-          </span>
+  <div @click="goToVault" class="card item selectable">
+    <img :src="vault.img" class="card-img" alt="...">
+    <div class="card-img-overlay d-flex justify-content-end align-items-between flex-column">
+      <span class="d-flex justify-content-between">
+        <span class="glass-card img-text pt-1 px-1">
+          {{vault.name}}
         </span>
-      </div>
+      </span>
     </div>
   </div>
+
 </template>
 
 

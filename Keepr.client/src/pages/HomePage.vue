@@ -42,7 +42,7 @@ export default {
     return {
       keeps: computed(() => AppState.keeps),
       keep: computed(() => AppState.activeKeep),
-      myVaults: computed(() => AppState.profileVaults),
+      myVaults: computed(() => AppState?.profileVaults),
 
       async getMyVaults() {
         try {

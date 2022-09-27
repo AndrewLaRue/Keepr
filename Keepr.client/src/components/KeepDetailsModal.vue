@@ -8,14 +8,15 @@
           </div>
           <div class="col-6 d-flex flex-column">
             <div class="modal-header fs-3">
-              <i class="mdi mdi-delete text-danger mx-3"></i>
+              <i v-if="account?.id == keep.creatorId" @click="deleteKeep(keep.id)"
+                class="mdi mdi-delete text-danger mx-3 selectable" data-bs-dismiss="modal" title="Delete Keep"></i>
               <span class="mx-3" title="Total Views">
                 <i class="mdi mdi-eye text-secondary"></i>
-                13
+                <span>{{keep.views}}</span>
               </span>
               <span class="mx-3" title="Vaults it in">
                 <i class="mdi mdi-ethernet mdi-flip-v text-primary"></i>
-                9
+                <span>{{keep.kept}}</span>
               </span>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -27,7 +28,7 @@
             </div>
             <div class="row my-3">
               <div class="col-4">
-                <select name="vaults" class="form-control">
+                <select name="vaults" class="form-control selectable">
                   <option value="">Add to Vault</option>
                   <option value="saab">Saab</option>
                   <option value="mercedes">Mercedes</option>
@@ -57,6 +58,7 @@ import { onMounted } from 'vue';
 import { AppState } from '../AppState.js';
 import { router } from '../router.js';
 import { accountService } from '../services/AccountService.js'
+import { keepsService } from '../services/KeepsService.js';
 import { profilesService } from '../services/ProfilesService.js';
 import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
@@ -72,8 +74,9 @@ export default {
     return {
 
       keep: computed(() => AppState.activeKeep),
-      profileVaults: computed(() => AppState.profileVaults),
+      profileVaults: computed(() => AppState?.profileVaults),
       profile: computed(() => AppState.activeProfile),
+      account: computed(() => AppState?.account),
 
       async goToProfile() {
         try {
@@ -83,8 +86,19 @@ export default {
           logger.error(error)
           Pop.toast(error.message, 'error')
         }
-      }
+      },
 
+
+      async deleteKeep(id) {
+        try {
+          const yes = await Pop.confirm('Delete the keep?')
+          if (!yes) { return }
+          await keepsService.deleteKeep(id)
+        } catch (error) {
+          logger.error('[Deleting Keep]', error)
+          Pop.error(error)
+        }
+      }
     }
   }
 }

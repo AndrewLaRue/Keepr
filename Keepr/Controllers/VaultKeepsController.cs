@@ -13,11 +13,15 @@ namespace Keepr.Controllers
   public class VaultKeepsController : ControllerBase
   {
     private readonly VaultKeepsService _vaultKeepsService;
+    private readonly VaultsService _vaultsService;
 
-    public VaultKeepsController(VaultKeepsService vaultKeepsService)
+    public VaultKeepsController(VaultKeepsService vaultKeepsService, VaultsService vaultsService)
     {
       _vaultKeepsService = vaultKeepsService;
+      _vaultsService = vaultsService;
     }
+
+
 
     // SECTION Create a VaultKeep
     [HttpPost]
@@ -26,10 +30,16 @@ namespace Keepr.Controllers
     {
       try
       {
+        // FIXME this is wrong
         Profile user = await HttpContext.GetUserInfoAsync<Profile>();
+        Account owner = await HttpContext.GetUserInfoAsync<Account>();
         newVaultKeep.CreatorId = user.Id;
         VaultKeep vaultKeep = _vaultKeepsService.Create(newVaultKeep);
         vaultKeep.Creator = user;
+        if (user.Id != owner.Id)
+        {
+          return BadRequest();
+        }
         return Ok(vaultKeep);
       }
       catch (Exception e)
@@ -40,11 +50,17 @@ namespace Keepr.Controllers
 
     // SECTION Get by id
     [HttpGet("{id}")]
-    public ActionResult<VaultKeep> GetOne(int id)
+    public async Task<ActionResult<VaultKeep>> GetOne(int id)
     {
       try
       {
+        Profile user = await HttpContext.GetUserInfoAsync<Profile>();
         VaultKeep vaultKeep = _vaultKeepsService.GetOne(id);
+        Vault vault = _vaultsService.GetOne(id);
+        if (vault.isPrivate == true || vaultKeep.CreatorId != user.Id)
+        {
+          return BadRequest();
+        }
         return Ok(vaultKeep);
       }
       catch (Exception e)

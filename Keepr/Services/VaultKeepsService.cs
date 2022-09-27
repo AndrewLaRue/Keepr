@@ -22,7 +22,7 @@ namespace Keepr.Services
 
 
     // SECTION Get VaultKeeps
-    internal List<VaultKeep> GetVaultKeeps(int vaultId)
+    internal List<CollectedKeepVM> GetVaultKeeps(int vaultId)
     {
       return _vaultKeepsRepo.GetVaultKeeps(vaultId);
     }

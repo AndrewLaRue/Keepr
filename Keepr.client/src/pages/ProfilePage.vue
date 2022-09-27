@@ -21,7 +21,7 @@
         data-bs-target="#vaultFormModal"></i>
     </div>
     <div class="col-12">
-      <div class="row">
+      <div class="masonry">
 
         <ProfileVaultCard v-for="v in vaults" :key="v.id" :vault="v" />
       </div>
@@ -44,6 +44,7 @@
   </div>
   <VaultFormModal />
   <KeepFormModal />
+  <KeepDetailsModal />
 </template>
 
 
@@ -62,6 +63,7 @@ import ProfileKeepCard from '../components/ProfileKeepCard.vue';
 import ProfileVaultCard from '../components/ProfileVaultCard.vue';
 import VaultFormModal from '../components/VaultFormModal.vue';
 import KeepFormModal from '../components/KeepFormModal.vue';
+import KeepDetailsModal from '../components/KeepDetailsModal.vue';
 
 export default {
   setup() {
@@ -110,7 +112,7 @@ export default {
 
     };
   },
-  components: { ProfileKeepCard, ProfileVaultCard, VaultFormModal, KeepFormModal }
+  components: { ProfileKeepCard, ProfileVaultCard, VaultFormModal, KeepFormModal, KeepDetailsModal }
 }
 
 </script>
