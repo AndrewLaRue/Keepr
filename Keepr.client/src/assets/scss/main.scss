@@ -8,6 +8,62 @@ body {
   overscroll-behavior: none;
 }
 
+
+
+// SECTION Desktop
+@media (min-width: 768px) {
+  .masonry {
+    /* Masonry container */
+    column-count: 4;
+    column-gap: 1em;
+    direction: row;
+    // margin-top: 3em;
+  }
+
+  .item {
+    /* Masonry bricks or child elements */
+    background-color: #eee;
+    display: inline-block;
+    margin: 0 0 1em;
+    width: 100%;
+  }
+
+  .mfs-3 {
+    font-size: 1.5rem !important;
+  }
+
+  .mfs-2 {
+    font-size: 2rem !important;
+  }
+}
+
+// SECTION Mobile
+@media (max-width: 768px) {
+  .masonry {
+    /* Masonry container */
+    column-count: 2;
+    column-gap: 1em;
+    direction: row;
+    // margin-top: 3em;
+  }
+
+  .item {
+    /* Masonry bricks or child elements */
+    background-color: #eee;
+    display: inline-block;
+    margin: 0 0 1em;
+    width: 100%;
+  }
+
+
+}
+
+
+
+
+
+
+
 .img-text {
   color: rgb(219, 219, 219);
   text-shadow: 1px 1px 3px rgb(32, 30, 30);
@@ -23,9 +79,9 @@ body {
 
 .bg-stone {
   background-image: url(https://wallpaperaccess.com/full/7885018.jpg);
-  background-position: center;
-  background-size: cover;
-  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  // min-height: 100vh;
 }
 
 .bg-clear {

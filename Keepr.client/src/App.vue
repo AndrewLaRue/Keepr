@@ -3,7 +3,7 @@
     <Navbar />
   </header>
   <main>
-    <div class="container-fluid bg-stone">
+    <div class="container-fluid big-stone">
       <router-view />
     </div>
   </main>
@@ -24,4 +24,11 @@ export default {
 </script>
 <style lang="scss">
 @import "./assets/scss/main.scss";
+
+.big-stone {
+  background-image: url(https://wallpaperaccess.com/full/7885018.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 75vh;
+}
 </style>

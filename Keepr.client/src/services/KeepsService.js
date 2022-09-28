@@ -30,6 +30,12 @@ class KeepsService {
     logger.log('getting all keeps', res.data)
     AppState.keeps = res.data
   }
+  // SECTION Get vaultKeeps
+  async getVaultKeeps(vaultId) {
+    const res = await api.get(`api/vaults/${vaultId}/keeps`)
+    logger.log('getting all vaultKeeps', res.data)
+    AppState.vaultKeeps = res.data
+  }
 
 
   async createKeep(keep) {
@@ -46,6 +52,11 @@ class KeepsService {
 
     AppState.profileKeeps = AppState.profileKeeps.filter(k => k.id != keepId)
 
+  }
+
+
+  async addToVault(vaultId, keepId) {
+    await api.post('api/vaultkeeps', vaultId, keepId)
   }
 }
 

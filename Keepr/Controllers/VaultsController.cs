@@ -55,7 +55,8 @@ namespace Keepr.Controllers
       {
         Profile user = await HttpContext.GetUserInfoAsync<Profile>();
         update.Id = id;
-        Vault vault = _vaultsService.Update(update, user.Id);
+        update.CreatorId = user.Id;
+        Vault vault = _vaultsService.Update(update);
         return Ok(vault);
       }
       catch (Exception e)
@@ -90,13 +91,13 @@ namespace Keepr.Controllers
       try
       {
         Profile user = await HttpContext.GetUserInfoAsync<Profile>();
-        Vault vault = _vaultsService.GetOne(id);
-        List<CollectedKeepVM> vaultKeep = _vaultKeepsService.GetVaultKeeps(id);
-        if (vault.isPrivate == true && vault.CreatorId != user.Id)
-        {
-          return BadRequest();
-        }
-        return Ok(vaultKeep);
+        // Vault vault = _vaultsService.GetOne(id, user?.Id);
+        List<CollectedKeepVM> vaultKeeps = _vaultKeepsService.GetVaultKeeps(id, user?.Id);
+        // if (vault.isPrivate == true && vault.CreatorId != user.Id)
+        // {
+        //   return BadRequest();
+        // }
+        return Ok(vaultKeeps);
       }
       catch (Exception e)
       {
@@ -113,11 +114,13 @@ namespace Keepr.Controllers
       try
       {
         Profile user = await HttpContext.GetUserInfoAsync<Profile>();
-        Vault vault = _vaultsService.GetOne(id);
-        if (vault.isPrivate == true && vault.CreatorId != user.Id)
-        {
-          return BadRequest();
-        }
+        // Account owner = await HttpContext.GetUserInfoAsync<Account>();
+        Vault vault = _vaultsService.GetOne(id, user?.Id);
+        // if (vault.CreatorId != user.Id && vault.isPrivate == true)
+        // {
+        //   return BadRequest();
+
+        // }
         return Ok(vault);
 
       }

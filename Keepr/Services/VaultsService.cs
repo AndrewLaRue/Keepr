@@ -29,21 +29,36 @@ namespace Keepr.Services
       {
         throw new Exception("No vault found with that id.");
       }
+      return vault;
+    }
 
+
+    // SECTION Get Vault by id with user
+    internal Vault GetOne(int id, string userId)
+    {
+      Vault vault = _vaultsRepo.GetOne(id);
+      if (vault == null)
+      {
+        throw new Exception("No vault found with that id.");
+      }
+      if ((bool)vault.isPrivate && vault.CreatorId != userId)
+      {
+        throw new Exception("Your not allowed to see that.");
+      }
       return vault;
     }
 
     // SECTION Update(edit) Vault
-    internal Vault Update(Vault update, string userId)
+    internal Vault Update(Vault update)
     {
-      Vault original = GetOne(update.Id);
-      if (original.CreatorId != userId)
+      Vault original = GetOne(update.Id, update.CreatorId);
+      if (original.CreatorId != update.CreatorId)
       {
         throw new Exception("Your not allowed to modify that.");
       }
       original.Name = update.Name ?? original.Name;
       original.Description = update.Description ?? original.Description;
-      original.isPrivate = update.isPrivate ?? original.isPrivate;
+      original.isPrivate = update.isPrivate == false ? update.isPrivate : original.isPrivate;
       original.Img = update.Img ?? original.Img;
       return _vaultsRepo.Update(original);
     }
@@ -58,7 +73,7 @@ namespace Keepr.Services
     // SECTION Delete Vault
     internal string Delete(int id, string userId)
     {
-      Vault vault = GetOne(id);
+      Vault vault = GetOne(id, userId);
       if (vault.CreatorId != userId)
       {
         throw new Exception("Your not allowed to delete that.");

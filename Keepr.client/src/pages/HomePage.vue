@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 py-0">
       <div class="masonry">
 
         <KeepCard v-for="k in keeps" :key="k.id" :keep="k" />
@@ -60,19 +60,5 @@ export default {
 
 
 <style lang="scss" scoped>
-.masonry {
-  /* Masonry container */
-  column-count: 4;
-  column-gap: 1em;
-  direction: row;
-  margin-top: 3em;
-}
 
-.item {
-  /* Masonry bricks or child elements */
-  background-color: #eee;
-  display: inline-block;
-  margin: 0 0 1em;
-  width: 100%;
-}
 </style>

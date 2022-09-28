@@ -3,10 +3,10 @@
     <div class="modal-dialog modal-xl  modal-dialog-centered">
       <div class="modal-content container-fluid">
         <div class="row">
-          <div class="col-6">
+          <div class="col-12 col-md-6">
             <img class="img-size rounded" :src="keep.img" alt="">
           </div>
-          <div class="col-6 d-flex flex-column">
+          <div class="col-12 col-md-6 d-flex flex-column">
             <div class="modal-header fs-3">
               <i v-if="account?.id == keep.creatorId" @click="deleteKeep(keep.id)"
                 class="mdi mdi-delete text-danger mx-3 selectable" data-bs-dismiss="modal" title="Delete Keep"></i>
@@ -28,11 +28,10 @@
             </div>
             <div class="row my-3">
               <div class="col-4">
-                <select name="vaults" class="form-control selectable">
-                  <option value="">Add to Vault</option>
-                  <option value="saab">Saab</option>
-                  <option value="mercedes">Mercedes</option>
-                  <option value="audi">Audi</option>
+                <select name="vaults" class="form-select selectable" v-model="selectedVault"
+                  @click="addToVault(keep.id)">
+                  <option v-for="v in accountVaults" :key="v.id" :vault="v" :value="v">
+                    {{v.name}}</option>
                 </select>
               </div>
               <div class="col-8 text-end">
@@ -54,7 +53,7 @@
 
 <script>
 import { computed } from '@vue/reactivity';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { AppState } from '../AppState.js';
 import { router } from '../router.js';
 import { accountService } from '../services/AccountService.js'
@@ -65,16 +64,18 @@ import Pop from '../utils/Pop.js';
 
 export default {
   // props: {
-  //   keep: { type: Object, required: true }
+  //   vault: { type: Object, required: true }
   // },
   setup() {
+    const selectedVault = ref({})
     onMounted(() => {
-      // getMyVaults();
-    });
+      // getVaultsByAccountId()
+    })
     return {
+      selectedVault,
 
       keep: computed(() => AppState.activeKeep),
-      profileVaults: computed(() => AppState?.profileVaults),
+      accountVaults: computed(() => AppState?.accountVaults),
       profile: computed(() => AppState.activeProfile),
       account: computed(() => AppState?.account),
 
@@ -88,6 +89,25 @@ export default {
         }
       },
 
+
+
+      async addToVault(keepId) {
+        try {
+          if (!selectedVault.value.id) {
+            // logger.log('blank')
+          } else {
+            // logger.log(selectedVault.value)
+            let vaultKeep = { vaultId: selectedVault.value.id, keepId }
+            await keepsService.addToVault(vaultKeep)
+            Pop.toast(`Added to Vault "${selectedVault.value.name}"`)
+            selectedVault.value = {}
+          }
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+
+      },
 
       async deleteKeep(id) {
         try {

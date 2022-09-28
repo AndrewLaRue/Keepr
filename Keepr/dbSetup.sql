@@ -1,3 +1,4 @@
+-- Active: 1663176644351@@SG-andrew-dev-codeworks-6716-mysql-master.servers.mongodirector.com@3306@Portfolio
 
 DROP TABLE keeps;
 DROP TABLE vaults;

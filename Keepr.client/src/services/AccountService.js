@@ -23,6 +23,18 @@ class AccountService {
     AppState.myVaults = res.data
   }
 
+  async getVaultsByAccountId(accountId) {
+    try {
+      const res = await api.get('/account/vaults', accountId)
+      logger.log('getting my vaults', res.data)
+      AppState.accountVaults = res.data
+    }
+    catch (error) {
+      logger.error("[Getting Profile Vaults]", error);
+      Pop.error(error);
+    }
+  }
+
 }
 
 export const accountService = new AccountService()

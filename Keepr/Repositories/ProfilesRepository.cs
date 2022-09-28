@@ -29,11 +29,11 @@ namespace Keepr.Repositories
         a.*
         FROM keeps k
         JOIN accounts a ON a.id = k.creatorId
-        WHERE k.creatorId = @id
+        WHERE a.id = @id
       ";
-      List<Keep> keeps = _db.Query<Keep, Account, Keep>(sql, (keep, account) =>
+      List<Keep> keeps = _db.Query<Keep, Profile, Keep>(sql, (keep, profile) =>
       {
-        keep.Creator = account;
+        keep.Creator = profile;
         return keep;
       }, new { id }).ToList();
       return keeps;

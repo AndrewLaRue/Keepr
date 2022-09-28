@@ -21,15 +21,20 @@ namespace Keepr.Repositories
     {
       string sql = @"
               INSERT INTO vaults
-                (name, description, img, creatorId)
+                (name, description, img, isPrivate, creatorId)
               VALUES
-                (@name, @description, @img, @creatorId);
+                (@name, @description, @img, @isPrivate, @creatorId);
               SELECT LAST_INSERT_ID();
       ";
       int id = _db.ExecuteScalar<int>(sql, newVault);
       newVault.Id = id;
       return newVault;
     }
+
+    // internal Vault GetOne(int id, string userId)
+    // {
+    //   throw new NotImplementedException();
+    // }
 
     internal List<Vault> GetMyVaults(string id)
     {
@@ -54,9 +59,9 @@ namespace Keepr.Repositories
         JOIN accounts a ON a.id = v.creatorId
         WHERE v.id = @id
       ";
-      return _db.Query<Vault, Profile, Vault>(sql, (vault, account) =>
+      return _db.Query<Vault, Profile, Vault>(sql, (vault, profile) =>
       {
-        vault.Creator = account;
+        vault.Creator = profile;
         return vault;
       }, new { id }).FirstOrDefault();
     }

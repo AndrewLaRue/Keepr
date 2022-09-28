@@ -1,11 +1,11 @@
 <template>
-  <div class="row my-nav justify-content-between align-items-center py-2">
-    <div class="col-4 col-md-1">
+  <div class="row my-nav justify-content-center bg-stone align-items-center pb-5 py-md-2">
+    <div class="col-12 col-md-1 text-center">
       <router-link :to="{ name: 'Home' }">
-        <img class="rounded-circle img-fluid" alt="logo" src="../assets/img/keep-logo.png" />
+        <img class="rounded-circle" alt="logo" src="../assets/img/keep-logo.png" height="150" />
       </router-link>
     </div>
-    <div class="col-8 col-md-11 text-end no-flow">
+    <div class="col-12 col-md-3 offset-md-8 text-center">
       <Login />
     </div>
   </div>
@@ -22,11 +22,7 @@ export default {
 </script>
 
 <style scoped>
-.no-flow {
-  /* overflow-x: hidden; */
-}
-
 .my-nav {
-  background-color: grey;
+  height: 25vh;
 }
 </style>

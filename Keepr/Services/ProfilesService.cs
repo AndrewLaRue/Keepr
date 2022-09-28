@@ -9,10 +9,12 @@ namespace Keepr.Services
   {
 
     private readonly ProfilesRepository _profilesRepo;
+    private readonly VaultsRepository _vaultsRepo;
 
-    public ProfilesService(ProfilesRepository profilesRepo)
+    public ProfilesService(ProfilesRepository profilesRepo, VaultsRepository vaultsRepo)
     {
       _profilesRepo = profilesRepo;
+      _vaultsRepo = vaultsRepo;
     }
 
     internal Profile GetById(string id)
@@ -42,7 +44,9 @@ namespace Keepr.Services
       {
         throw new Exception("bad profile id");
       }
-      return _profilesRepo.GetAllVaults(id);
+      List<Vault> vaults = _vaultsRepo.GetMyVaults(id);
+      List<Vault> publicVaults = vaults.FindAll(v => v.isPrivate == false);
+      return publicVaults;
     }
   }
 }

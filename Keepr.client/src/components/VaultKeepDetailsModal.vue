@@ -1,17 +1,17 @@
 <template>
-  <div class="modal fade" id="keepDetailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="vaultKeepDetailsModal" tabindex="-1" aria-labelledby="vaultKeepModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl  modal-dialog-centered">
       <div class="modal-content container-fluid">
         <div class="row">
-          <div class="col-6">
+          <div class="col-12 col-md-6">
             <img class="img-size rounded" :src="keep.img" alt="">
           </div>
-          <div class="col-6 d-flex flex-column">
+          <div class="col-12 col-md-6 d-flex flex-column">
             <div class="modal-header fs-3">
-              <i class="mdi mdi-delete text-danger mx-3"></i>
               <span class="mx-3" title="Total Views">
                 <i class="mdi mdi-eye text-secondary"></i>
-                13
+                <span>{{keep.views}}</span>
               </span>
               <span class="mx-3" title="Vaults it in">
                 <i class="mdi mdi-ethernet mdi-flip-v text-primary"></i>
@@ -20,16 +20,23 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body row">
-              <div class="fs-2 modal-title">
-                <!-- {{keep.name}} -->
-              </div>
+              <div class="fs-2 modal-title">{{keep.name}}</div>
               <p>
-                <!-- {{keep.description}} -->
+                {{keep.description}}
               </p>
             </div>
             <div class="row my-3">
               <div class="col-4">
-
+                <button class btn btn-outline-danger>
+                  wer
+                </button>
+              </div>
+              <div class="col-8 text-end">
+                <img @click="goToProfile" data-bs-dismiss="modal" :src="keep.creator?.picture"
+                  class="rounded-circle selectable" alt="" height="35" title="Go to Profile page.">
+                <span :title="keep.creator?.name">
+                  {{keep.creator?.name}}
+                </span>
               </div>
             </div>
           </div>
@@ -43,27 +50,31 @@
 
 <script>
 import { computed } from '@vue/reactivity';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { AppState } from '../AppState.js';
 import { router } from '../router.js';
 import { accountService } from '../services/AccountService.js'
+import { keepsService } from '../services/KeepsService.js';
 import { profilesService } from '../services/ProfilesService.js';
 import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
 
 export default {
   // props: {
-  //   keep: { type: Object, required: true }
+  //   vault: { type: Object, required: true }
   // },
   setup() {
+    // const selectedVault = ref({})
     onMounted(() => {
       // getMyVaults();
     });
     return {
+      // selectedVault,
 
       keep: computed(() => AppState.activeKeep),
-      profileVaults: computed(() => AppState.profileVaults),
+      profileVaults: computed(() => AppState?.profileVaults),
       profile: computed(() => AppState.activeProfile),
+      account: computed(() => AppState?.account),
 
       async goToProfile() {
         try {
@@ -73,8 +84,36 @@ export default {
           logger.error(error)
           Pop.toast(error.message, 'error')
         }
-      }
+      },
 
+      // async addToVault(keepId) {
+      //   try {
+      //     if (!selectedVault.value.id) {
+      //       // logger.log('blank')
+      //     } else {
+      //       // logger.log(selectedVault.value)
+      //       let vaultKeep = { vaultId: selectedVault.value.id, keepId }
+      //       await keepsService.addToVault(vaultKeep)
+      //       Pop.toast(`Added to Vault "${selectedVault.value.name}"`)
+      //       selectedVault.value = {}
+      //     }
+      //   } catch (error) {
+      //     logger.error(error)
+      //     Pop.toast(error.message, 'error')
+      //   }
+
+      // },
+
+      async deleteKeep(id) {
+        try {
+          const yes = await Pop.confirm('Delete the keep?')
+          if (!yes) { return }
+          await keepsService.deleteKeep(id)
+        } catch (error) {
+          logger.error('[Deleting Keep]', error)
+          Pop.error(error)
+        }
+      }
     }
   }
 }
