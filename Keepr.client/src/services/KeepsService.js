@@ -49,7 +49,7 @@ class KeepsService {
   async createKeep(keep) {
     const res = await api.post('api/keeps', keep)
     logger.log('creating a keep', res.data)
-    AppState.keeps.push(res.data)
+    AppState.keeps = AppState.keeps.push(res.data)
   }
 
 
@@ -61,11 +61,18 @@ class KeepsService {
     AppState.profileKeeps = AppState.profileKeeps.filter(k => k.id != keepId)
 
   }
+  // async deleteProfileKeep(keepId) {
+  //   await api.delete(`api/keeps/${keepId}`)
+
+  //   // AppState.keeps = AppState.keeps.filter(k => k.id != keepId)
+
+  //   AppState.profileKeeps = AppState.profileKeeps.filter(k => k.id != keepId)
+
+  // }
   async deleteVaultKeep(vaultKeepId) {
     await api.delete(`api/vaultkeeps/${vaultKeepId}`)
 
-    AppState.vaultKeeps = AppState.vaultKeeps.filter(v => v.id != vaultKeepId)
-
+    AppState.vaultKeeps = AppState.vaultKeeps.filter(v => v.vaultKeepId != vaultKeepId)
 
   }
 

@@ -36,7 +36,7 @@ export default {
 
       async getMyVaults() {
         try {
-          await accountService.getMyVaults()
+          await accountService.getVaultsByAccountId()
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')
@@ -46,7 +46,9 @@ export default {
       async setActive() {
         try {
           await keepsService.setActiveVaultKeep(props.vaultKeep)
+          // await keepsService.setActiveKeep(props.vaultKeep.id)
           // await keepsService.setActiveVaultKeep(vkId)
+          props.vaultKeep.views++
           if (this.account.id != null) {
             this.getMyVaults()
           }

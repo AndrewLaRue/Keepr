@@ -21,8 +21,11 @@ import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
 import KeepDetailsModal from '../components/KeepDetailsModal.vue';
 import { accountService } from '../services/AccountService.js';
+import { useRoute, useRouter } from 'vue-router';
 export default {
   setup() {
+    const router = useRouter();
+    const route = useRoute();
     async function getAllKeeps() {
       try {
         await keepsService.getAllKeeps();

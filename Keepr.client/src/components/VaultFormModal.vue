@@ -11,20 +11,21 @@
             <div class="col-md-12">
               <label for="name">Name:</label>
               <input type="text" class="form-control" v-model="editable.name" required name="name" aria-label="Name"
-                placeholder="Name..." minlength="2" maxlength="50">
+                placeholder="Name..." minlength="2" maxlength="50" title="Name">
             </div>
             <div class="col-md-12">
               <label for="Image">Image:</label>
               <input type="url" class="form-control" v-model="editable.img" required name="img"
-                placeholder="Image Url..." aria-label="Image Url" minlength="5" maxlength="250">
+                placeholder="Image Url..." aria-label="Image Url" minlength="5" maxlength="250" title="Image">
             </div>
             <div class="col-md-12">
               <label for="description">Description:</label>
               <textarea v-model="editable.description" class="form-control" name="description" id="" required
-                placeholder="Description..." aria-label="Description"></textarea>
+                placeholder="Description..." aria-label="Description" title="Description"></textarea>
             </div>
             <label for="isPrivate">Private? </label>
-            <input type="checkbox" class="mx-1" v-model="editable.isPrivate" name="isPrivate" placeholder="isPrivate">
+            <input type="checkbox" class="mx-1" v-model="editable.isPrivate" name="isPrivate" placeholder="isPrivate"
+              title="Private?">
             <div class="text-center">
               <button type="submit" data-bs-dismiss="modal" class="btn btn-primary mt-2 selectable"
                 aria-label="Save Button">Save</button>

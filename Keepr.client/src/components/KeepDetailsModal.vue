@@ -30,10 +30,10 @@
               <div class="col-4">
                 <label for="vaults">Add to Vault</label>
                 <select name="vaults" class="form-select selectable pt-1" aria-label="Vault Dropdown"
-                  v-model="selectedVault" @click="addToVault(keep.id)">
+                  v-model="selectedVault" @change="addToVault(keep.id)">
                   <option selected value="">Add to Vault</option>
-                  <option v-for="v in accountVaults" :key="v.id" :vault="v" :value="v" :aria-label="v.name">
-                    {{v.name}}</option>
+                  <option v-for="v in profileVaults" :key="v.id" :vault="v" :value="v" :aria-label="v.name">
+                    {{v.name}} </option>
                 </select>
               </div>
               <div class="col-8 text-end">
@@ -80,7 +80,7 @@ export default {
       selectedVault,
 
       keep: computed(() => AppState.activeKeep),
-      accountVaults: computed(() => AppState?.accountVaults),
+      profileVaults: computed(() => AppState?.profileVaults),
       profile: computed(() => AppState.activeProfile),
       account: computed(() => AppState?.account),
 
@@ -105,6 +105,7 @@ export default {
             let vaultKeep = { vaultId: selectedVault.value.id, keepId }
             await keepsService.addToVault(vaultKeep)
             Pop.toast(`Added to Vault "${selectedVault.value.name}"`)
+            AppState.activeKeep.kept++
             selectedVault.value = {}
           }
         } catch (error) {

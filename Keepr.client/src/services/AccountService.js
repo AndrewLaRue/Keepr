@@ -28,7 +28,7 @@ class AccountService {
     try {
       const res = await api.get('/account/vaults', accountId)
       logger.log('getting my vaults', res.data)
-      AppState.accountVaults = res.data
+      AppState.profileVaults = res.data
     }
     catch (error) {
       logger.error("[Getting Profile Vaults]", error);

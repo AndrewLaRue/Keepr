@@ -1,12 +1,24 @@
 <template>
   <div class="row img-text">
-    <div class="col-6 col-md-10 mt-5">
-      <h1 class="">{{vault?.name}}</h1>
-      <p class="fs-4">Keeps: <span>{{vaultKeeps.length}}</span></p>
+    <div class="col-4 col-md-10 mt-5">
+      <h1 class="selectable" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false"
+        aria-controls="collapseWidthExample" title="Show Vault Description">{{vault?.name}}</h1>
+      <span class="fs-4" title="Vault Owner"><img :src="vault?.creator?.picture" class="rounded-circle pe-2" alt=""
+          height="35">{{vault?.creator?.name}}</span>
+      <p class="fs-4">Keeps: <span>{{vaultKeeps?.length}}</span></p>
     </div>
-    <div class="col-6 col-md-2">
-      <button v-if="account?.id == keep.creatorId" @click="deleteVault(vault?.id)" class="btn btn-danger mt-5">Delete
+
+    <div class="col-1 col-md-2">
+      <button v-if="account?.id == vault?.creatorId" @click="deleteVault(vault?.id)" class="btn btn-danger mt-5">Delete
         Vault</button>
+
+    </div>
+    <div style="min-height: 120px;">
+      <div class="collapse collapse-horizontal" id="collapseWidthExample">
+        <div class="card card-body glass-card img-text" style="width: 300px;">
+          {{vault?.description}}
+        </div>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -31,6 +43,7 @@ import { vaultsService } from '../services/VaultsService.js';
 import { useRoute, useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 import { keepsService } from '../services/KeepsService.js';
+import { profilesService } from '../services/ProfilesService.js';
 
 export default {
   // props: {
@@ -44,9 +57,9 @@ export default {
 
     async function getActiveVault() {
       try {
-        if (!AppState.activeVault) {
-          await vaultsService.setActiveVault(route.params.id);
-        }
+
+        await vaultsService.setActiveVault(route.params.vaultId);
+
       }
       catch (error) {
         logger.log(error);
@@ -54,11 +67,31 @@ export default {
       }
     }
 
+    async function getVaultKeeps() {
+      try {
+        await keepsService.getVaultKeeps(route.params.vaultId)
+      } catch (error) {
+        logger.error(error)
+        Pop.toast(error.message, 'error')
+      }
+    }
+    // async function getProfileById() {
+    //   try {
+    //     await profilesService.getProfileById();
+    //   }
+    //   catch (error) {
+    //     logger.error("[GettingProfile]", error);
+    //     Pop.error(error);
+    //     router.push({ name: "Home" });
+    //   }
+    // }
 
 
     onMounted(() => {
+      logger.log("load the vault page")
       getActiveVault();
-      // getVaultKeeps()
+      getVaultKeeps();
+      // getProfileById()
     });
     return {
       vault: computed(() => AppState.activeVault),
@@ -68,14 +101,7 @@ export default {
       // vaultKeep: computed(() => AppState.activeVaultKeep),
       keep: computed(() => AppState.activeKeep),
 
-      async getVaultKeeps() {
-        try {
-          await keepsService.getVaultKeeps(props.vault.id)
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
-        }
-      },
+
 
 
       async deleteVault(vaultId) {

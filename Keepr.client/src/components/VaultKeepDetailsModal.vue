@@ -5,34 +5,36 @@
       <div class="modal-content container-fluid">
         <div class="row">
           <div class="col-12 col-md-6">
-            <img class="img-size rounded" :src="vaultKeep.img" alt="">
+            <img class="img-size rounded" :src="vaultKeep?.img" alt="">
           </div>
           <div class="col-12 col-md-6 d-flex flex-column">
             <div class="modal-header fs-3">
               <span class="mx-3" title="Total Views">
                 <i class="mdi mdi-eye text-secondary"></i>
-                <span>{{vaultKeep.views}}</span>
+                <span>{{vaultKeep?.views}}</span>
               </span>
               <span class="mx-3" title="Vaults it in">
                 <i class="mdi mdi-ethernet mdi-flip-v text-primary"></i>
-                <span>{{vaultKeep.kept}}</span>
+                <span>{{vaultKeep?.kept}}</span>
               </span>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body row">
-              <div class="fs-2 modal-title">{{vaultKeep.name}}</div>
+              <div class="fs-2 modal-title">{{vaultKeep?.name}}</div>
               <p>
-                {{keep.description}}
+                {{vaultKeep?.description}}
               </p>
             </div>
             <div class="row my-3">
               <div class="col-4">
-                <button class="btn btn-outline-danger" title="Remove from Vault" data-bs-dismiss="modal">
-                  <i @click="deleteVaultKeep(vaultKeep.vaultKeepId)" class="mdi mdi-delete" data-bs-dismiss="modal"></i>
+                <button v-if="account.id == profile.id" class="btn btn-outline-danger" title="Remove from Vault"
+                  data-bs-dismiss="modal">
+                  <i @click="deleteVaultKeep(vaultKeep?.vaultKeepId)" class="mdi mdi-delete"
+                    data-bs-dismiss="modal"></i>
                 </button>
               </div>
               <div class="col-8 text-end">
-                <img @click="goToProfile" data-bs-dismiss="modal" :src="vaultKeep.creator?.picture"
+                <img @click="goToProfile" data-bs-dismiss="modal" :src="vaultKeep?.creator?.picture"
                   class="rounded-circle selectable" alt="" height="35" title="Go to Profile page.">
                 <span :title="vaultKeep.creator?.name">
                   {{vaultKeep.creator?.name}}
@@ -51,6 +53,7 @@
 <script>
 import { computed } from '@vue/reactivity';
 import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { AppState } from '../AppState.js';
 import { router } from '../router.js';
 import { accountService } from '../services/AccountService.js'
@@ -64,6 +67,8 @@ export default {
   //   vaultKeep: { type: Object, required: true }
   // },
   setup() {
+    const router = useRouter();
+    const route = useRoute();
     // const selectedVault = ref({})
     onMounted(() => {
       // getMyVaults();
@@ -71,7 +76,7 @@ export default {
     return {
       // selectedVault,
 
-      keep: computed(() => AppState.activeKeep),
+      // keep: computed(() => AppState.activeKeep),
       vaultKeep: computed(() => AppState.activeKeep),
       profileVaults: computed(() => AppState?.profileVaults),
       profile: computed(() => AppState.activeProfile),
@@ -79,8 +84,8 @@ export default {
 
       async goToProfile() {
         try {
-          await profilesService.getProfileById(this.keep.creator.id)
-          router.push({ name: 'Profile', params: { profileId: this.keep.creator.id } })
+          await profilesService.getProfileById(this.vaultKeep.creator.id)
+          router.push({ name: 'Profile', params: { profileId: this.vaultKeep.creator.id } })
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')
@@ -105,22 +110,23 @@ export default {
 
       // },
 
-      async deleteKeep(id) {
-        try {
-          const yes = await Pop.confirm('Delete the keep?')
-          if (!yes) { return }
-          await keepsService.deleteKeep(id)
-        } catch (error) {
-          logger.error('[Deleting Keep]', error)
-          Pop.error(error)
-        }
-      },
+      // async deleteKeep(id) {
+      //   try {
+      //     const yes = await Pop.confirm('Delete the keep?')
+      //     if (!yes) { return }
+      //     await keepsService.deleteKeep(id)
+      //   } catch (error) {
+      //     logger.error('[Deleting Keep]', error)
+      //     Pop.error(error)
+      //   }
+      // },
 
       async deleteVaultKeep(id) {
         try {
-          const yes = await Pop.confirm('Delete the keep?')
+          const yes = await Pop.confirm('Remove the keep?')
           if (!yes) { return }
           await keepsService.deleteVaultKeep(id)
+          // await keepsService.getVaultKeeps(route.params.vaultId)
         } catch (error) {
           logger.error('[Deleting Keep]', error)
           Pop.error(error)

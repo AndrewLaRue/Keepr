@@ -3,18 +3,18 @@
     <div class="col-md-12">
       <label for="name">Name:</label>
       <input type="text" class="form-control" v-model="editable.name" required name="name" placeholder="Name..."
-        aria-label="Name">
+        aria-label="Name" title="Name">
     </div>
     <div class="col-md-12">
       <label for="email">Email:</label>
       <input type="text" class="form-control" v-model="editable.email" required name="email" placeholder="Email..."
-        aria-label="Email">
+        aria-label="Email" title="Email">
     </div>
 
     <div class="col-md-12">
       <label for="picture">Picture:</label>
       <input type="url" class="form-control" v-model="editable.picture" required name="picture" placeholder="Picture..."
-        aria-label="Image Url">
+        aria-label="Image Url" title="Picture">
     </div>
 
 

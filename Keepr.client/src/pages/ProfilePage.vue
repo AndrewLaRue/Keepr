@@ -10,7 +10,7 @@
       <span class="mfs-6">
         <p class="mfs-2 mb-0">{{ profile.name }}</p>
         <p v-if="profile.id != account.id" class="mfs-3 mb-0">Vaults: <span>{{vaults.length}}</span></p>
-        <p v-else class="mfs-3 mb-0">Vaults: <span>{{accountVaults.length}}</span></p>
+        <p v-else class="mfs-3 mb-0">Vaults: <span>{{vaults.length}}</span></p>
         <p class="mfs-3 mb-0">Keeps: <span>{{keeps.length}}</span></p>
       </span>
     </div>
@@ -28,10 +28,7 @@
     <div class="col-12">
       <div class="masonry">
 
-        <ProfileVaultCard v-if="profile.id != account.id" v-for="v in vaults" :key="v.id" :vault="v"
-          @click="getVaultKeeps(v.id)" />
-
-        <ProfileVaultCard v-else v-for="av in accountVaults" :key="av.id" :vault="av" @click="getVaultKeeps(av.id)" />
+        <ProfileVaultCard v-for="v in vaults" :key="v.id" :vault="v" @click="getVaultKeeps(v.id)" />
       </div>
     </div>
 
@@ -95,13 +92,17 @@ export default {
 
     async function getVaults() {
       try {
-        let accountId = await accountService.getAccount()
-        await accountService.getVaultsByAccountId(accountId)
-        await vaultsService.getVaultsByProfileId(route.params.profileId);
+        if (AppState.account.id == route.params.profileId) {
+          // let accountId = await accountService.getAccount()
+          await accountService.getVaultsByAccountId()
+        } else {
+          await vaultsService.getVaultsByProfileId(route.params.profileId);
+        }
       }
       catch (error) {
         logger.error("[Getting Profile Vaults]", error);
         Pop.error(error);
+
       }
     }
 

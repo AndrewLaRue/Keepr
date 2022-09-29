@@ -1,5 +1,5 @@
-20 Requirements
 
+<!--TODO 20 Requirements -->
 
 [-X-] Visitors can see all keeps (login not required)
 
@@ -45,52 +45,37 @@
 
 [--] UI adheres to all phases of CodeWorks Design Requirements
 
-7 Stretch Goals
-
-[--] Keeps should be tagged, allowing users find keeps by tag
-
-[--] Users can create custom tags
-
-[--] Tags are not duplicated (Games,games,GAMES)
-
-[-X-] Stretch Goal API tests pass
-
-[--] Implement pagination or infinite scroll
-
-[--] Users can extend their profile to include a bio, hobbies, ect...
-
-[--] Users can share to other popular social media
-
 
 <!-- FIXME list -->
-[-X-] on vault creation, need to make the vault reactive, same for delete.
 
-[-X-] check overflow cutoff, esp in log in component.
+<!-- [-X-] on vault creation, need to make the vault reactive, same for delete. -->
+
+<!-- [-X-] check overflow cutoff, esp in log in component. -->
 
 [--] check everything for title and aria labels. Ask what things need one.
 
-[--] stop the flashes of old things when i load up a new appstate, look at how loading was done on magic medley.  Get a cool animation if time allows.
+<!-- [--] stop the flashes of old things when i load up a new appstate, look at how loading was done on magic medley.  Get a cool animation if time allows. -->
 
-[-X-] check each page/component for silent errors.
+<!-- [-X-] check each page/component for silent errors. -->
 
 [--] when refreshing on a vault page, stop the redirect to home page.
 
-[--] select option needs a default option.
+<!-- [--] select option needs a default option. -->
 
-[--] add counter to check remaining input characters.  on the img url, maybe put a v-if warning that part of the image url may have been cut off.
+<!-- [--] add counter to check remaining input characters.  on the img url, maybe put a v-if warning that part of the image url may have been cut off. -->
 
 [--] ask Jake about visually hidden for labels.
 
-[--] check into why the router push doesn't always work.  puts it in the url but doesn't change page automatically.
+[--] check into why the router push doesn't always work.  puts it in the url but doesn't change page automatically.   ask about   import Vue from 'vue/dist/vue.js';  to fix the occasional route.push not working.
 
-[--] Clean up logs and useless things.
+<!-- [--] Clean up logs and useless things. -->
 
 [--] add spot for vault description.
 
 [--] run final tests from postman.
 
-[--] hide remove from vault button in vaultkeep modal from other profiles.
+[-X-] hide remove from vault button in vaultKeep modal from other profiles.
 
-[--] Go through and ad  comments to code explaining things. use NOTE - 
+[--] refreshing on the vault or profile page gives the have you started your server yet error.  I thought authSettled would take care of that.
 
-[--] add styling as needed
+<!-- [--] Go through and ad comments to code explaining things. use NOTE -  -->

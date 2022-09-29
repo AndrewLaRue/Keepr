@@ -32,20 +32,24 @@ export default {
     return {
       account: computed(() => AppState?.account),
 
-      async getMyVaults() {
+      async getVaultsByAccountId() {
         try {
-          await accountService.getMyVaults()
+          if (this.account.id) {
+            let accountId = await accountService.getAccount()
+            await accountService.getVaultsByAccountId(accountId)
+          }
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')
         }
       },
 
+
       async setActiveKeep(id) {
         try {
           await keepsService.setActiveKeep(id)
           if (this.account.id != null) {
-            this.getMyVaults()
+            this.getVaultsByAccountId()
           }
         } catch (error) {
           logger.error(error)
