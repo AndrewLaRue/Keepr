@@ -1,4 +1,5 @@
 import { AppState } from '../AppState'
+import { Profile } from '../models/Profile.js'
 import { logger } from '../utils/Logger'
 import { api } from './AxiosService'
 
@@ -14,7 +15,7 @@ class AccountService {
 
   async editAccount(accountData) {
     const res = await api.put('account', accountData)
-    AppState.account = new Account(res.data)
+    AppState.account = new Profile(res.data)
   }
 
   async getMyVaults() {

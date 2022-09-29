@@ -1,13 +1,14 @@
 <template>
-  <div @click="setActiveKeep(keep.id)" class="card item text-bg-dark selectable" data-bs-toggle="modal"
+  <div @click="setActive()" class="card item text-bg-dark selectable text-bg-dark min-ht" data-bs-toggle="modal"
     data-bs-target="#vaultKeepDetailsModal">
-    <img :src="keep.img" class="card-img" alt="...">
+    <img :src="vaultKeep.img" class="card-img" alt="...">
     <div class="card-img-overlay d-flex justify-content-end align-items-between flex-column">
       <span class="d-flex justify-content-between">
         <span class="glass-card pt-1 px-1">
-          {{keep.name}}
+          {{vaultKeep.name}}
         </span>
-        <img :src="keep.creator?.picture" class="rounded-circle" alt="" height="35" :title="keep.creator?.name">
+        <img :src="vaultKeep.creator?.picture" class="rounded-circle" alt="" height="35"
+          :title="vaultKeep.creator?.name">
       </span>
     </div>
   </div>
@@ -24,12 +25,12 @@ import Pop from '../utils/Pop.js'
 
 export default {
   props: {
-    keep: {
+    vaultKeep: {
       type: Object,
       required: true,
     }
   },
-  setup() {
+  setup(props) {
     return {
       account: computed(() => AppState?.account),
 
@@ -42,9 +43,10 @@ export default {
         }
       },
 
-      async setActiveKeep(id) {
+      async setActive() {
         try {
-          await keepsService.setActiveKeep(id)
+          await keepsService.setActiveVaultKeep(props.vaultKeep)
+          // await keepsService.setActiveVaultKeep(vkId)
           if (this.account.id != null) {
             this.getMyVaults()
           }

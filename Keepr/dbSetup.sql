@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS keeps(
 INSERT INTO keeps
 (CreatorId, name, img, description)
 VALUES
-('63237a3deb908c6c2763fd4a', 'Futurama', 'https://cdni.russiatoday.com/rbthmedia/images/web/en-rbth/images/2014-07/big/Futurama-468.jpg', 'Russian artist recreates Futurama landscape in 3D');
+('63237a3deb908c6c2763fd4a', 'Planet Express Ship', 'https://cdni.russiatoday.com/rbthmedia/images/web/en-rbth/images/2014-07/big/Futurama-468.jpg', 'Russian artist recreates Futurama landscape in 3D');
 
 
 -- SECTION Vaults
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS vaults(
 INSERT INTO vaults
 (CreatorId, name, img, description, isPrivate)
 VALUES
-('63237a3deb908c6c2763fd4a', 'Futurama', 'https://live.staticflickr.com/65535/50933783533_afa31e47e8_z.jpg', 'Vault for all things related to Futurama', 1);
+('63237a3deb908c6c2763fd4a', 'Futurama Vault', 'https://live.staticflickr.com/65535/50933783533_afa31e47e8_z.jpg', 'Vault for all things related to Futurama', 0);
 
 
 

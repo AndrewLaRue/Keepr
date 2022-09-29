@@ -10,20 +10,23 @@
           <form class="account-form" @submit.prevent="createKeep">
             <div class="col-md-12">
               <label for="name">Name:</label>
-              <input type="text" class="form-control" v-model="editable.name" required name="name">
+              <input type="text" class="form-control" v-model="editable.name" required name="name" aria-label="Name"
+                placeholder="Name..." minlength="2" maxlength="50">
             </div>
             <div class="col-md-12">
               <label for="img">Image:</label>
-              <input type="url" class="form-control" v-model="editable.img" required name="img">
+              <input type="url" class="form-control" v-model="editable.img" required name="img" aria-label="Image Url"
+                placeholder="Image Url..." minlength="2" maxlength="250">
             </div>
             <div class="col-md-12">
               <label for="description">Description:</label>
-              <textarea v-model="editable.description" class="form-control" name="description" id=""
-                required></textarea>
+              <textarea v-model="editable.description" class="form-control" name="description" id="" required
+                placeholder="Description..." aria-label="Description"></textarea>
             </div>
 
             <div class="text-center">
-              <button type="submit" data-bs-dismiss="modal" class="btn btn-primary mt-2 selectable">Save</button>
+              <button type="submit" data-bs-dismiss="modal" class="btn btn-primary mt-2 selectable"
+                aria-label="Save Button">Save</button>
             </div>
           </form>
         </div>

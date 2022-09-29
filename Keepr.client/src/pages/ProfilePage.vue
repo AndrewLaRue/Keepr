@@ -9,7 +9,8 @@
     <div class="col-8 col-md-6 img-text glass-card">
       <span class="mfs-6">
         <p class="mfs-2 mb-0">{{ profile.name }}</p>
-        <p class="mfs-3 mb-0">Vaults: <span>{{vaults.length}}</span></p>
+        <p v-if="profile.id != account.id" class="mfs-3 mb-0">Vaults: <span>{{vaults.length}}</span></p>
+        <p v-else class="mfs-3 mb-0">Vaults: <span>{{accountVaults.length}}</span></p>
         <p class="mfs-3 mb-0">Keeps: <span>{{keeps.length}}</span></p>
       </span>
     </div>
@@ -20,14 +21,17 @@
   <div class="row">
     <div class="col-12 fs-1 glass-pro-card img-text ps-5 mb-4">
       <span class=" p-2">
-        Vaults <i class="mdi mdi-plus text-primary selectable" data-bs-toggle="modal"
+        Vaults <i v-if="profile.id == account.id" class="mdi mdi-plus text-primary selectable" data-bs-toggle="modal"
           data-bs-target="#vaultFormModal"></i>
       </span>
     </div>
-    <div class="col-12 py-0">
+    <div class="col-12">
       <div class="masonry">
 
-        <ProfileVaultCard v-for="v in vaults" :key="v.id" :vault="v" @click="getVaultKeeps(v.id)" />
+        <ProfileVaultCard v-if="profile.id != account.id" v-for="v in vaults" :key="v.id" :vault="v"
+          @click="getVaultKeeps(v.id)" />
+
+        <ProfileVaultCard v-else v-for="av in accountVaults" :key="av.id" :vault="av" @click="getVaultKeeps(av.id)" />
       </div>
     </div>
 
@@ -38,11 +42,11 @@
   <div class="row">
     <div class="col-12 fs-1 glass-pro-card img-text ps-5 my-4">
       <span class="p-2">
-        Keeps <i class="mdi mdi-plus text-primary selectable" data-bs-toggle="modal"
+        Keeps <i v-if="profile.id == account.id" class="mdi mdi-plus text-primary selectable" data-bs-toggle="modal"
           data-bs-target="#keepFormModal"></i>
       </span>
     </div>
-    <div class="col-12 py-0">
+    <div class="col-12">
       <div class="masonry">
 
         <ProfileKeepCard v-for="k in keeps" :key="k.id" :keep="k" />
@@ -89,8 +93,10 @@ export default {
       }
     }
 
-    async function getVaultsByProfileId() {
+    async function getVaults() {
       try {
+        let accountId = await accountService.getAccount()
+        await accountService.getVaultsByAccountId(accountId)
         await vaultsService.getVaultsByProfileId(route.params.profileId);
       }
       catch (error) {
@@ -115,10 +121,12 @@ export default {
     onMounted(() => {
       getProfileById();
       getKeepsByProfileId();
-      getVaultsByProfileId();
+      getVaults();
     });
     return {
       profile: computed(() => AppState.activeProfile),
+      account: computed(() => AppState.account),
+      accountVaults: computed(() => AppState.accountVaults),
       keeps: computed(() => AppState.profileKeeps),
       vaults: computed(() => AppState.profileVaults),
 

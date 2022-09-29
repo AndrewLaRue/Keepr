@@ -37,7 +37,22 @@ namespace Keepr.Controllers
       }
     }
 
-
+    [HttpPut]
+    [Authorize]
+    public async Task<ActionResult<Profile>> Update(string id, [FromBody] Profile update)
+    {
+      try
+      {
+        Profile user = await HttpContext.GetUserInfoAsync<Profile>();
+        // update.Id = id;
+        Profile account = (Profile)_accountService.Edit(update, user.Email);
+        return Ok(account);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
 
     // SECTION Get my vaults
     [HttpGet("vaults")]
@@ -56,7 +71,9 @@ namespace Keepr.Controllers
       }
     }
 
+
+
+
+
   }
-
-
 }

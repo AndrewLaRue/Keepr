@@ -50,6 +50,26 @@ namespace Keepr.Repositories
       return vaultKeeps;
     }
 
+    // SECTION get one
+    internal VaultKeep GetOne(int id)
+    {
+      string sql = @"
+      SELECT 
+        vk.*,
+        k.*,
+        a.*
+        FROM vaultKeeps vk
+        JOIN keeps k ON k.id = vk.keepId
+        JOIN accounts a ON a.id = vk.creatorId
+        WHERE vk.id = @id
+      ";
+      return _db.Query<VaultKeep, Profile, VaultKeep>(sql, (vaultKeep, account) =>
+      {
+        vaultKeep.Creator = account;
+        return vaultKeep;
+      }, new { id }).FirstOrDefault();
+    }
+
     // SECTION Delete VaultKeep
     internal void Delete(int id)
     {
@@ -60,22 +80,6 @@ namespace Keepr.Repositories
       _db.Execute(sql, new { id });
     }
 
-    // SECTION get one
-    internal VaultKeep GetOne(int id)
-    {
-      string sql = @"
-      SELECT 
-        vk.*,
-        a.*
-        FROM vaultKeeps vk
-        JOIN accounts a ON a.id = vk.creatorId
-        WHERE vk.id = @id
-      ";
-      return _db.Query<VaultKeep, Profile, VaultKeep>(sql, (vaultKeep, account) =>
-      {
-        vaultKeep.Creator = account;
-        return vaultKeep;
-      }, new { id }).FirstOrDefault();
-    }
+
   }
 }

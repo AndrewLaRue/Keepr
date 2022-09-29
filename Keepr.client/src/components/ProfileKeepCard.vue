@@ -1,5 +1,5 @@
 <template>
-  <div @click="setActiveKeep(keep.id)" class="card item text-bg-dark selectable" data-bs-toggle="modal"
+  <div @click="setActiveKeep(keep.id)" class="card item text-bg-dark selectable min-ht" data-bs-toggle="modal"
     data-bs-target="#keepDetailsModal">
     <img :src="keep.img" class="card-img" alt="...">
     <div class="card-img-overlay d-flex justify-content-end align-items-between flex-column">

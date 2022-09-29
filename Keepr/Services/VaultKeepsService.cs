@@ -41,11 +41,12 @@ namespace Keepr.Services
     {
       VaultKeep vaultKeep = GetOne(id);
       Keep keep = _keepsRepo.GetOne(vaultKeep.KeepId);
-      if (vaultKeep.CreatorId != userId)
+      Vault vault = _vaultsRepo.GetOne(vaultKeep.VaultId);
+      if (vault.CreatorId != userId)
       {
         throw new Exception("Your not allowed to delete that.");
       }
-      // FIXME this doesnt work, need to dig into it more
+
       keep.Kept--;
       _keepsRepo.Update(keep);
       _vaultKeepsRepo.Delete(id);

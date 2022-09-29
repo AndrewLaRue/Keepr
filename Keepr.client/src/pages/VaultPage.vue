@@ -2,17 +2,18 @@
   <div class="row img-text">
     <div class="col-6 col-md-10 mt-5">
       <h1 class="">{{vault?.name}}</h1>
-      <p class="fs-4">Keeps: <span>4</span></p>
+      <p class="fs-4">Keeps: <span>{{vaultKeeps.length}}</span></p>
     </div>
     <div class="col-6 col-md-2">
-      <button @click="deleteVault(vault?.id)" class="btn btn-danger mt-5">Delete Vault</button>
+      <button v-if="account?.id == keep.creatorId" @click="deleteVault(vault?.id)" class="btn btn-danger mt-5">Delete
+        Vault</button>
     </div>
   </div>
   <div class="row">
-    <div class="col-12 py-0">
+    <div class="col-12">
       <div class="masonry">
 
-        <VaultKeepCard v-for="k in vaultKeeps" :key="k.id" :keep="k" />
+        <VaultKeepCard v-for="vk in vaultKeeps" :key="vk.id" :vaultKeep="vk" />
       </div>
     </div>
   </div>
@@ -35,14 +36,16 @@ export default {
   // props: {
   //   vault: { type: Object, required: true }
   // },
-  setup(props) {
+  setup() {
 
     const route = useRoute();
     const router = useRouter();
+
+
     async function getActiveVault() {
       try {
         if (!AppState.activeVault) {
-          await vaultsService.getOne(route.params.id);
+          await vaultsService.setActiveVault(route.params.id);
         }
       }
       catch (error) {
@@ -60,7 +63,10 @@ export default {
     return {
       vault: computed(() => AppState.activeVault),
       profile: computed(() => AppState.activeProfile),
+      account: computed(() => AppState.account),
       vaultKeeps: computed(() => AppState.vaultKeeps),
+      // vaultKeep: computed(() => AppState.activeVaultKeep),
+      keep: computed(() => AppState.activeKeep),
 
       async getVaultKeeps() {
         try {

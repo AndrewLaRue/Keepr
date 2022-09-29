@@ -11,11 +11,11 @@
               <i v-if="account?.id == keep.creatorId" @click="deleteKeep(keep.id)"
                 class="mdi mdi-delete text-danger mx-3 selectable" data-bs-dismiss="modal" title="Delete Keep"></i>
               <span class="mx-3" title="Total Views">
-                <i class="mdi mdi-eye text-secondary"></i>
+                <i class="mdi mdi-eye text-secondary pe-1"></i>
                 <span>{{keep.views}}</span>
               </span>
               <span class="mx-3" title="Vaults it in">
-                <i class="mdi mdi-ethernet mdi-flip-v text-primary"></i>
+                <i class="mdi mdi-ethernet mdi-flip-v text-primary pe-1"></i>
                 <span>{{keep.kept}}</span>
               </span>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -26,17 +26,19 @@
                 {{keep.description}}
               </p>
             </div>
-            <div class="row my-3">
+            <div class="row my-3 align-items-center">
               <div class="col-4">
-                <select name="vaults" class="form-select selectable" v-model="selectedVault"
-                  @click="addToVault(keep.id)">
-                  <option v-for="v in accountVaults" :key="v.id" :vault="v" :value="v">
+                <label for="vaults">Add to Vault</label>
+                <select name="vaults" class="form-select selectable pt-1" aria-label="Vault Dropdown"
+                  v-model="selectedVault" @click="addToVault(keep.id)">
+                  <option selected value="">Add to Vault</option>
+                  <option v-for="v in accountVaults" :key="v.id" :vault="v" :value="v" :aria-label="v.name">
                     {{v.name}}</option>
                 </select>
               </div>
               <div class="col-8 text-end">
                 <img @click="goToProfile" data-bs-dismiss="modal" :src="keep.creator?.picture"
-                  class="rounded-circle selectable" alt="" height="35" title="Go to Profile page.">
+                  class="rounded-circle selectable pe-1" alt="" height="35" title="Go to Profile page.">
                 <span :title="keep.creator?.name">
                   {{keep.creator?.name}}
                 </span>
@@ -71,6 +73,9 @@ export default {
     onMounted(() => {
       // getVaultsByAccountId()
     })
+    // watchEffect(() => {
+
+    // })
     return {
       selectedVault,
 
@@ -131,5 +136,16 @@ export default {
   max-height: 80vh;
   margin-top: 1em;
   margin-bottom: 1em;
+}
+
+.dropdown-menu {
+  user-select: none;
+  display: block;
+  transform: scale(0);
+  transition: all 0.15s linear;
+}
+
+.dropdown-menu.show {
+  transform: scale(1);
 }
 </style>

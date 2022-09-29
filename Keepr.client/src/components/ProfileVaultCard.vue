@@ -1,11 +1,12 @@
 <template>
 
-  <div @click="goToVault" class="card item selectable">
+  <div @click="goToVault" class="card item selectable text-bg-dark min-ht">
     <img :src="vault.img" class="card-img" alt="...">
     <div class="card-img-overlay d-flex justify-content-end align-items-between flex-column">
+
       <span class="d-flex justify-content-between">
         <span class="glass-card img-text pt-1 px-1">
-          {{vault.name}}
+          {{vault.name}} <i v-if="vault.isPrivate" class="mdi mdi-lock" title="Private"></i>
         </span>
       </span>
     </div>

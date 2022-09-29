@@ -14,12 +14,16 @@ namespace Keepr.Controllers
   {
     private readonly VaultKeepsService _vaultKeepsService;
     private readonly VaultsService _vaultsService;
+    private readonly KeepsService _keepsService;
 
-    public VaultKeepsController(VaultKeepsService vaultKeepsService, VaultsService vaultsService)
+    public VaultKeepsController(VaultKeepsService vaultKeepsService, VaultsService vaultsService, KeepsService keepsService)
     {
       _vaultKeepsService = vaultKeepsService;
       _vaultsService = vaultsService;
+      _keepsService = keepsService;
     }
+
+
 
 
 
@@ -66,17 +70,12 @@ namespace Keepr.Controllers
 
     // SECTION Get by id
     [HttpGet("{id}")]
-    public async Task<ActionResult<VaultKeep>> GetOne(int id)
+    public ActionResult<VaultKeep> GetOne(int id)
     {
       try
       {
-        Profile user = await HttpContext.GetUserInfoAsync<Profile>();
         VaultKeep vaultKeep = _vaultKeepsService.GetOne(id);
-        Vault vault = _vaultsService.GetOne(id, user?.Id);
-        if (vault.isPrivate == true || vaultKeep.CreatorId != user.Id)
-        {
-          return BadRequest();
-        }
+        Keep keep = _keepsService.GetOne(vaultKeep.KeepId);
         return Ok(vaultKeep);
       }
       catch (Exception e)
@@ -84,6 +83,27 @@ namespace Keepr.Controllers
         return BadRequest(e.Message);
       }
     }
+    // // SECTION Get by id
+    // [HttpGet("{id}")]
+    // public async Task<ActionResult<VaultKeep>> GetOne(int id)
+    // {
+    //   try
+    //   {
+    //     Profile user = await HttpContext.GetUserInfoAsync<Profile>();
+    //     VaultKeep vaultKeep = _vaultKeepsService.GetOne(id);
+    //     int vaultId = vaultKeep.KeepId;
+    //     Vault vault = _vaultsService.GetOne(vaultId, user?.Id);
+    //     if (vault.isPrivate == true || vaultKeep.CreatorId != user.Id)
+    //     {
+    //       return BadRequest();
+    //     }
+    //     return Ok(vaultKeep);
+    //   }
+    //   catch (Exception e)
+    //   {
+    //     return BadRequest(e.Message);
+    //   }
+    // }
 
 
 

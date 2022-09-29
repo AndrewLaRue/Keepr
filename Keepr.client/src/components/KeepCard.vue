@@ -1,6 +1,6 @@
 <template>
-  <div @click="setActiveKeep(keep.id)" class="card item text-bg-dark selectable" data-bs-toggle="modal"
-    data-bs-target="#keepDetailsModal">
+  <div @click="setActiveKeep(keep.id)" class="card item text-bg-dark selectable text-bg-dark min-ht"
+    data-bs-toggle="modal" data-bs-target="#keepDetailsModal">
     <img :src="keep.img" class="card-img" alt="...">
     <div class="card-img-overlay d-flex justify-content-end align-items-between flex-column">
       <span class="d-flex justify-content-between">
@@ -18,7 +18,6 @@
 import { computed } from '@vue/reactivity'
 import { AppState } from '../AppState.js'
 import { accountService } from '../services/AccountService.js'
-import { api } from '../services/AxiosService.js'
 import { keepsService } from '../services/KeepsService.js'
 import { logger } from '../utils/Logger.js'
 import Pop from '../utils/Pop.js'
